@@ -995,10 +995,10 @@ class fxcmpy(object):
                   'is_in_pips': is_in_pips
                  }
 
-        if limit is not None:
-            params['limit'] = limit
         if stop is not None:
             params['stop'] = stop
+        if limit is not None:
+            params['limit'] = limit
         if trailing_step is not None:
             params['trailing_step'] = trailing_step
 

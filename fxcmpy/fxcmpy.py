@@ -901,7 +901,7 @@ class fxcmpy(object):
         is_in_pips: boolean (default True),
             whether the trades stop/limit rates are in pips.
 
-        limit: float (default 0),
+        limit: float or None (default None),
             the trades limit rate.
 
         at_market: float (default 0),
@@ -937,13 +937,7 @@ class fxcmpy(object):
             rate = float(rate)
         except:
             raise TypeError('rate must be a number.')
-
-        if limit is not None:
-            try:
-                limit = float(limit)
-            except:
-                raise TypeError('limit must be a number.')
-
+            
         try:
             at_market = float(at_market)
         except:
@@ -976,6 +970,12 @@ class fxcmpy(object):
                 stop = float(stop)
             except:
                 raise TypeError('stop must be a number.')
+                
+        if limit is not None:
+            try:
+                limit = float(limit)
+            except:
+                raise TypeError('limit must be a number.')
 
         if trailing_step is not None:
             try:
@@ -992,7 +992,6 @@ class fxcmpy(object):
                   'at_market': at_market,
                   'order_type': order_type,
                   'time_in_force': time_in_force,
-                  'limit': limit,
                   'is_in_pips': is_in_pips
                  }
 
@@ -1328,7 +1327,7 @@ class fxcmpy(object):
         return order
 
     def create_entry_order(self, symbol, is_buy, amount, time_in_force,
-                           order_type="Entry", limit=0, is_in_pips=True,
+                           order_type="Entry", limit=None, is_in_pips=True,
                            rate=0, stop=None, trailing_step=None,
                            account_id=None):
         """ Creates an entry order for a given instrument.
@@ -1361,7 +1360,7 @@ class fxcmpy(object):
         is_in_pips: boolean (default True),
             whether the trade's stop/limit rates are in pips.
 
-        limit: float (default 0),
+        limit: float or None (default None),
             the trades limit rate.
 
         stop: float or None (default None),
@@ -1397,11 +1396,6 @@ class fxcmpy(object):
         except:
             raise TypeError('rate must be a number.')
 
-        try:
-            limit = float(limit)
-        except:
-            raise TypeError('limit must be a number.')
-
         if order_type not in ['Entry']:
             msg = "order_type must be 'Entry'."
             raise ValueError(msg)
@@ -1429,6 +1423,12 @@ class fxcmpy(object):
                 stop = float(stop)
             except:
                 raise TypeError('stop must be a number.')
+        
+        if limit is not None:
+            try:
+                limit = float(limit)
+            except:
+                raise TypeError('limit must be a number.')
 
         if trailing_step is not None:
             try:
@@ -1442,7 +1442,6 @@ class fxcmpy(object):
                   'is_buy': is_buy,
                   'rate': rate,
                   'amount': amount,
-                  'limit': limit,
                   'order_type': order_type,
                   'is_in_pips': is_in_pips,
                   'time_in_force': time_in_force
@@ -1450,6 +1449,8 @@ class fxcmpy(object):
 
         if stop is not None:
             params['stop'] = stop
+        if limit is not None:
+            params['limit'] = limit
         if trailing_step is not None:
             params['trailing_step'] = trailing_step
 
